@@ -265,8 +265,10 @@ def main():
                                     print("Select the opposing team you'd prefer to use for comparison")
                                     choose_teams_menu()
                                     teamB = input('Enter the opposing team: ')
-                                    teamB = map[teamB]
-                                    
+
+                                    if (validate_team_input(teamB)):
+                                        teamB = map[teamB]
+
                                 elif(second_sub_option == 4):
                                     break
                                 
@@ -279,10 +281,6 @@ def main():
                         fav_team = input('Enter the team you would like to change to :')
 
                         if (validate_team_input(fav_team)):
-                            # if user enters invalid team or unsupported
-                            if (fav_team not in map.keys()):
-                                print(f'Invalid input, please select from the list of available teams {map.keys()}')
-
                             fav_team = map[fav_team]
                             fav_team_list = get_matches_of_fav_team(fav_team)
 

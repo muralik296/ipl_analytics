@@ -49,6 +49,6 @@ def second_sub_menu(fav_team, teamB):
     print(f'3. Change the team you would like to compare against')
     print(f'4. Go back to Main Menu')
 
-    opt = input('Enter options between 1-3: ')
+    opt = input('Enter options between 1-4: ')
 
     return int(opt)
