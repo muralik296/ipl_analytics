@@ -88,6 +88,7 @@ def infer_performance(success_rate,teamA,year1,year2):
 
 def input_years():
     print('-- Input the seasons range --')
+    print('The year must be between 2008 and 2022')
     year1 = (input('Enter first year: ')).strip()
     year2 = (input('Enter second year: ')).strip()
     return year1,year2
@@ -146,11 +147,11 @@ def main():
                                     else:
                                         print('')
                                         print(f'------ Team performance between {year1} and {year2} ------')
-                                        print(f'Number of wins:\t{number_of_wins}')
-                                        print(f'Lost Matches:\t{number_of_losses}')
-                                        print(f'No result :\t{no_result}')
+                                        print(f'Number of wins: {number_of_wins}')
+                                        print(f'Lost Matches: {number_of_losses}')
+                                        print(f'No result : {no_result}')
                                         print('')
-                                        print(f'Total Matches Played: \t{total_matches_played}')
+                                        print(f'Total Matches Played: {total_matches_played}')
                                         success_rate = round((number_of_wins/total_matches_played)*100)
                                         print(f'Win Percentage: {success_rate} %')
                                         infer_performance(success_rate,fav_team,year1,year2)
@@ -173,7 +174,7 @@ def main():
                                     
                                     # Print the table
                                     print()
-                                    print(f'The Man of the Match Awardees between {year1} and {year2}')
+                                    print(f'The Man of the Match Awardees in the specified time range')
                                     print("{:<20} {:<5}".format("Player", "Number of MOTM"))
                                     print("-" * 30)
                                     for player, count in result:
@@ -182,7 +183,7 @@ def main():
                                     if (len(result) == 0):
                                         print('Team has not played during those seasons')
                                     else:
-                                        print(f'{result[0][0]} is the player with most number of awards')
+                                        print(f'{result[0][0]} is the player with most number of awards in the specified period')
                                         print('')
 
                             #1.3 is Playoffs record
@@ -264,8 +265,8 @@ def main():
                                             print(f'{fav_team} has played {total_matches} matches against {teamB}')
                                             print(f'{fav_team} has won {number_of_wins} head-to-head contests against {teamB}')
 
-                                            print(f'Win % of {fav_team} against {teamB}: \t{round((number_of_wins/total_matches)*100)}%')
-                                            print(f'Win % tosses of {fav_team} against {teamB}: \t{round((toss_wins/total_matches*100))}%')
+                                            print(f'Win % of {fav_team} against {teamB}: {round((number_of_wins/total_matches)*100)}%')
+                                            print(f'Win % tosses of {fav_team} against {teamB}: t{round((toss_wins/total_matches*100))}%')
                                         else:
                                             print(f'No games played between {fav_team} and {teamB}')
 

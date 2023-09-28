@@ -31,8 +31,8 @@ def main_menu(fav_team):
 
 
 def first_sub_menu(fav_team):
-    print(f'----------- Self Analysis of your team {fav_team} --------------')
-    print(f'a. Team performance (Win%, Number of matches won/lost)')
+    print(f'----------- Team analysis of {fav_team} --------------')
+    print(f'a. Team performance')
     print(f'b. MOTM Records (Man of the match records)')
     print(f'c. Playoffs record')
     print(f'd. Go back to Main Menu')
@@ -43,7 +43,7 @@ def first_sub_menu(fav_team):
 
 
 def second_sub_menu(fav_team, teamB):
-    print(f'----------- Performance Against Other Team --------------')
+    print(f'----------- Stats {fav_team} vs. {teamB} --------------')
     print(f'a. Team Performance of {fav_team} against {teamB}')
     print(f'b. How does {fav_team} stand against {teamB} in playoffs')
     print(f'c. Change the team you would like to compare against')
