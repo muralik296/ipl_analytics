@@ -323,8 +323,6 @@ def main():
                                         more_playoff = f"{teamB} has played more playoff games than {fav_team}" if (teamB_playoffs>teamA_playoffs) else f"{fav_team} has played more playoff games than {teamB}" 
 
                                         print(more_playoff)
-                                        # more_head_head_playoffs = f"{teamB} performed better in playoffs against {fav_team}" if (teamAB_losses>teamAB_wins) else f"{fav_team} performed better in playoffs  against {teamB}"
-                                        # print(more_head_head_playoffs)
                                             
                                     # switch to another teamB
                                     elif (second_sub_option == 'C'):
