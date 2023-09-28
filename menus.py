@@ -25,30 +25,30 @@ def main_menu(fav_team):
     print(f'3. Change your favorite team')
     print(f'4. Exit')
 
-    opt = input('Enter options between 1-4: ')
+    opt = (input('Enter options between 1-4: ')).strip()
     
     return int(opt)
 
 
 def first_sub_menu(fav_team):
     print(f'----------- Self Analysis of your team {fav_team} --------------')
-    print(f'1. Team performance (Win%, Number of matches won/lost)')
-    print(f'2. MOTM Records (Man of the match records)')
-    print(f'3. Playoffs record')
-    print(f'4. Go back to Main Menu')
+    print(f'a. Team performance (Win%, Number of matches won/lost)')
+    print(f'b. MOTM Records (Man of the match records)')
+    print(f'c. Playoffs record')
+    print(f'd. Go back to Main Menu')
 
-    opt = input('Enter options between 1-4: ')
+    opt = input('Enter options (a-d): ')
     
-    return int(opt)
+    return opt.upper().strip()
 
 
 def second_sub_menu(fav_team, teamB):
     print(f'----------- Performance Against Other Team --------------')
-    print(f'1. Team Performance of {fav_team} against {teamB}')
-    print(f'2. How does {fav_team} stand against {teamB} in playoffs')
-    print(f'3. Change the team you would like to compare against')
-    print(f'4. Go back to Main Menu')
+    print(f'a. Team Performance of {fav_team} against {teamB}')
+    print(f'b. How does {fav_team} stand against {teamB} in playoffs')
+    print(f'c. Change the team you would like to compare against')
+    print(f'd. Go back to Main Menu')
 
-    opt = input('Enter options between 1-4: ')
+    opt = input('Enter options (a-d): ')
 
-    return int(opt)
+    return opt.upper().strip()

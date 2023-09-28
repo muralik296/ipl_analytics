@@ -1,3 +1,4 @@
+import sys
 from map import map
 from utils import get_matches_of_fav_team
 from about import about_app
@@ -70,6 +71,27 @@ def validate_change_teams(fav_team,teamB):
         return
     return True
 
+
+def infer_performance(success_rate,teamA,year1,year2):
+    if (success_rate < 50):
+        if (year1 == year2):
+            print(f'{teamA} performance has been below par in the year {year1}')
+        else:
+            print(f'{teamA} performance has been below par between the years {year1} and {year2}')
+
+    else:
+        if (year1 == year2):
+            print(f'{teamA} performance has been above par in the year {year1}')
+        else:
+            print(f'{teamA} performance has been above par between the years {year1} and {year2}')
+
+
+def input_years():
+    print('-- Input the seasons range --')
+    year1 = (input('Enter first year: ')).strip()
+    year2 = (input('Enter second year: ')).strip()
+    return year1,year2
+
 def main():
     try:
         # about the app
@@ -80,7 +102,7 @@ def main():
             # print the teams available
             choose_teams_menu()
 
-            fav_team = input('Enter the team you would like to view stats : ')
+            fav_team = (input('Enter the team you would like to view stats : ')).upper()
 
             if (validate_team_input(fav_team)):
                 fav_team = map[fav_team]
@@ -103,51 +125,67 @@ def main():
                             # first sub menu
                             first_sub_option = first_sub_menu(fav_team)      
                             
-                            
-                            # 1.1 is performance between two years
-                            if (first_sub_option == 1):
+                            if (first_sub_option == 'A'):
                                 # stats between which seasons
-                                year1 = int(input('Enter first year: '))
-                                year2 = int(input('Enter second year: '))
-
-                                #? TO DO year1 and year2 validation to be done            
-
-                                number_of_wins,number_of_losses,no_result = view_win_loss_stats_fav_team(fav_team,fav_team_list,year1,year2)
-                                total_matches_played = (number_of_wins+number_of_losses+no_result)
+                                year1,year2=input_years()
                                 
-                                if (total_matches_played == 0):
-                                    print('The team did not play during those seasons')
+                                if((year1.isnumeric() == False) or (year2.isnumeric() == False)):
+                                    print('Invalid years input, please enter values between 2008 and 2022')
+
+                                elif(int(year1) < 2008 or int(year2) > 2022):
+                                    print('Invalid years input, please enter values between 2008 and 2022')
+
                                 else:
-                                    print('')
-                                    print(f'------ Team performance between {year1} and {year2} ------')
-                                    print(f'Number of wins:\t{number_of_wins}')
-                                    print(f'Lost Matches:\t{number_of_losses}')
-                                    print(f'No result :\t{no_result}')
-                                    print('')
-                                    print(f'Total Matches Played: \t{total_matches_played}')
-                                    print(f'Win Percentage\t{round((number_of_wins/total_matches_played)*100)} %')
-                                    print('')
+                                    year1=int(year1)
+                                    year2=int(year2)
+                                    number_of_wins,number_of_losses,no_result = view_win_loss_stats_fav_team(fav_team,fav_team_list,year1,year2)
+                                    total_matches_played = (number_of_wins+number_of_losses+no_result)
+                                    
+                                    if (total_matches_played == 0):
+                                        print('The team did not play during those seasons')
+                                    else:
+                                        print('')
+                                        print(f'------ Team performance between {year1} and {year2} ------')
+                                        print(f'Number of wins:\t{number_of_wins}')
+                                        print(f'Lost Matches:\t{number_of_losses}')
+                                        print(f'No result :\t{no_result}')
+                                        print('')
+                                        print(f'Total Matches Played: \t{total_matches_played}')
+                                        success_rate = round((number_of_wins/total_matches_played)*100)
+                                        print(f'Win Percentage: {success_rate} %')
+                                        infer_performance(success_rate,fav_team,year1,year2)
+                                        print('')
 
                             # 1.2 is MOTM records 
-                            elif (first_sub_option  == 2):
+                            elif (first_sub_option  == 'B'):
 
                                 # stats between which seasons
-                                year1 = int(input('Enter years between: '))
-                                year2 = int(input('Enter second year: '))
-
-                                result = motm(fav_team,fav_team_list,year1,year2)
-
-                                # Print the table
-                                print()
-                                print(f'The Man of the Match Awardees between {year1} and {year2}')
-                                print("{:<20} {:<5}".format("Player", "Number of MOTM"))
-                                print("-" * 30)
-
-                                for player, count in result:
-                                    print("{:<20} {:<5}".format(player, count))
+                                year1,year2 = input_years()
+                                if((year1.isnumeric() == False) or (year2.isnumeric() == False)):
+                                    print('Invalid years input, please enter values between 2008 and 2022')
+   
+                                elif(int(year1) < 2008 or int(year2) > 2022):
+                                    print('Invalid years input, please enter values between 2008 and 2022')
+                                else:
+                                    year1=int(year1)
+                                    year2=int(year2)
+                                    result = motm(fav_team,fav_team_list,year1,year2)
+                                    
+                                    # Print the table
+                                    print()
+                                    print(f'The Man of the Match Awardees between {year1} and {year2}')
+                                    print("{:<20} {:<5}".format("Player", "Number of MOTM"))
+                                    print("-" * 30)
+                                    for player, count in result:
+                                        print("{:<20} {:<5}".format(player, count))
+                                    #inference
+                                    if (len(result) == 0):
+                                        print('Team has not played during those seasons')
+                                    else:
+                                        print(f'{result[0][0]} is the player with most number of awards')
 
                             #1.3 is Playoffs record
-                            elif (first_sub_option == 3):
+                            elif (first_sub_option == 'C'):
                                 
                                 result = playoff_record(fav_team_list)
                                 print("{:<5} {:<20} {:<40} {:<40} {:<40} {:<40}".format("Year", "Playoff Match","First Team","Second Team","Winning Team","Venue"))
@@ -162,15 +200,19 @@ def main():
                                     print("{:<5} {:<20} {:<40} {:<40} {:<40} {:<40}".format(ele[3], ele[4], ele[5], ele[6],ele[11],ele[7]))
                                 string_with_years = ','.join(years_won)
                                 print('')
-                                print(f'{fav_team} has won {number_of_wins} tournaments in the years {string_with_years}')
+                                
+                                # print only if any wins in the years
+                                conditional_string = 'f{fav_team} has won {number_of_wins} IPL Cups in the years {string_with_years}.' if (number_of_wins>0) else 'f{fav_team} has not won any IPL Cups' 
+                                
+                                print(f'{conditional_string}')
                             
                             #1.4 Takes user back to main menu
-                            elif (first_sub_option == 4):
+                            elif (first_sub_option == 'D'):
                                 break
                     
                     elif (opt == 2):
                         # the second sub menu
-                        teamB = input('Enter the team against which you would like to view stats: ')
+                        teamB = (input('Enter the team against which you would like to view stats: ')).upper()
 
                         if (validate_team_input(teamB)):
                             #validating changing of opposing team
@@ -185,7 +227,7 @@ def main():
                                     second_sub_option = second_sub_menu(fav_team, teamB)
 
                                     # 2.1 performance against other team
-                                    if (second_sub_option == 1):
+                                    if (second_sub_option == 'A'):
                                         toss_wins = 0
                                         head_head_playoffs = 0
                                         playoff_wins = 0
@@ -225,7 +267,7 @@ def main():
                                             print(f'No games played between {fav_team} and {teamB}')
 
                                     # playoff record of both the teams
-                                    elif (second_sub_option == 2):
+                                    elif (second_sub_option == 'B'):
                                         # playoff record
                                         print("{:<5} {:<20} {:<40} {:<40} {:<40} {:<40}".format("Year", "Playoff Match","First Team","Second Team","Winning Team","Venue"))
                                         print("-" * 185)
@@ -269,17 +311,17 @@ def main():
                                         print(f'{teamB} has played {teamB_playoffs} playoff matches')
                                             
                                     # switch to another teamB
-                                    elif (second_sub_option == 3):
+                                    elif (second_sub_option == 'C'):
                                         print("--- Change your opposing team ---")
                                         choose_teams_menu()
-                                        teamB = input('Enter the opposing team: ')
+                                        teamB = (input('Enter the opposing team: ')).upper()
 
                                         if (validate_team_input(teamB)):
                                             #validating changing of opposing team
                                             if (validate_change_teams(fav_team,map[teamB])):
                                                 teamB = map[teamB]
 
-                                    elif(second_sub_option == 4):
+                                    elif(second_sub_option == 'D'):
                                         break
                                     
                                     else:
@@ -288,15 +330,15 @@ def main():
                     elif (opt == 3):
                         print('----- Change your primary team --------')
                         choose_teams_menu()
-                        fav_team = input('Enter the team you would like to change to :')
+                        fav_team = (input('Enter the team you would like to change to :')).upper()
 
                         if (validate_team_input(fav_team)):
                             fav_team = map[fav_team]
                             fav_team_list = get_matches_of_fav_team(fav_team)
 
                     elif (opt == 4):
-                        exit()
-
+                        # break
+                        sys.exit(0)
                     else:
                         print('Invalid Option, please select options between 1-3')
             
