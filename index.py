@@ -62,13 +62,13 @@ def playoff_record(teamAList):
 def validate_team_input(team):
     if (team not in map.keys()):
         print(f'Invalid input, please select from the list of available teams {list(map.keys())}')
-        return
+        return False
     return True
 
 def validate_change_teams(fav_team,teamB):
     if(fav_team == teamB):
         print('The opposing team and your current team cannot be the same!')
-        return
+        return False
     return True
 
 
@@ -183,6 +183,7 @@ def main():
                                         print('Team has not played during those seasons')
                                     else:
                                         print(f'{result[0][0]} is the player with most number of awards')
+                                        print('')
 
                             #1.3 is Playoffs record
                             elif (first_sub_option == 'C'):
@@ -198,11 +199,13 @@ def main():
                                         number_of_wins+=1
                                         years_won.append(ele[3])
                                     print("{:<5} {:<20} {:<40} {:<40} {:<40} {:<40}".format(ele[3], ele[4], ele[5], ele[6],ele[11],ele[7]))
+                                
                                 string_with_years = ','.join(years_won)
+                                
                                 print('')
                                 
                                 # print only if any wins in the years
-                                conditional_string = 'f{fav_team} has won {number_of_wins} IPL Cups in the years {string_with_years}.' if (number_of_wins>0) else 'f{fav_team} has not won any IPL Cups' 
+                                conditional_string = f"{fav_team} has won {number_of_wins} IPL Cups in the years {string_with_years}." if (number_of_wins>0) else f"{fav_team} has not won any IPL Cups" 
                                 
                                 print(f'{conditional_string}')
                             
@@ -212,7 +215,7 @@ def main():
                     
                     elif (opt == 2):
                         # the second sub menu
-                        teamB = (input('Enter the team against which you would like to view stats: ')).upper()
+                        teamB = (input('Enter the opponent: ')).upper()
 
                         if (validate_team_input(teamB)):
                             #validating changing of opposing team
@@ -269,6 +272,8 @@ def main():
                                     # playoff record of both the teams
                                     elif (second_sub_option == 'B'):
                                         # playoff record
+                                        print(f'-------- PLAYOFF RECORD ({fav_team}) v ({teamB}) ----------')
+                                        print()
                                         print("{:<5} {:<20} {:<40} {:<40} {:<40} {:<40}".format("Year", "Playoff Match","First Team","Second Team","Winning Team","Venue"))
                                         print("-" * 185)
                                         
@@ -279,12 +284,17 @@ def main():
                                         teamB_cup = 0
 
                                         both_playoffs = 0
-
+                                        
+                                        teamAB_wins  = 0
+                                        teamAB_losses = 0
                                         for ele in fav_team_list:
                                             # filtering items where teamB and teamA have played and also its a qualifier match(playoff)
                                             if ((ele[5] == teamB or ele[6] == teamB) and (ele[4] == 'Qualifier' or ele[4] == 'Final')):
                                                 both_playoffs+=1
-
+                                                if(ele[11] == fav_team):
+                                                    teamAB_wins+=1
+                                                else:
+                                                    teamAB_losses+=1
                                                 print("{:<5} {:<20} {:<40} {:<40} {:<40} {:<40}".format(ele[3], ele[4], ele[5], ele[6],ele[11],ele[7]))
                                             
                                             if ((ele[4] == 'Qualifier' or ele[4] == 'Final')):
@@ -301,25 +311,31 @@ def main():
                                                     teamB_cup+=1
 
                                             
-                                        print("")
+                                        print()
 
                                         print(f'{fav_team} and {teamB} went head-to-head in {both_playoffs} playoff matches')
-                                        print(f'{fav_team} has won {teamA_cup} IPL tournaments')
-                                        print(f'{teamB} has won {teamB_cup} IPL tournaments')
+                                        print(f'{fav_team} has won {teamA_cup} IPL tournaments across all seasons')
+                                        print(f'{teamB} has won {teamB_cup} IPL tournaments across all seasons')
                                         print('')
                                         print(f'{fav_team} has played {teamA_playoffs} playoff matches')
                                         print(f'{teamB} has played {teamB_playoffs} playoff matches')
+                                        
+                                        more_playoff = f"{teamB} has played more playoff games than {fav_team}" if (teamB_playoffs>teamA_playoffs) else f"{fav_team} has played more playoff games than {teamB}" 
+
+                                        print(more_playoff)
+                                        more_head_head_playoffs = f"{teamB} performed better in playoffs against {fav_team}" if (teamAB_losses>teamAB_wins) else f"{fav_team} performed better in playoffs  against {teamB}"
+                                        print(more_head_head_playoffs)
                                             
                                     # switch to another teamB
                                     elif (second_sub_option == 'C'):
                                         print("--- Change your opposing team ---")
                                         choose_teams_menu()
-                                        teamB = (input('Enter the opposing team: ')).upper()
+                                        alternative_opt = (input('Enter the opposing team: ')).upper()
 
-                                        if (validate_team_input(teamB)):
+                                        if (validate_team_input(alternative_opt)):
                                             #validating changing of opposing team
-                                            if (validate_change_teams(fav_team,map[teamB])):
-                                                teamB = map[teamB]
+                                            if (validate_change_teams(fav_team,map[alternative_opt])):
+                                                teamB = map[alternative_opt]
 
                                     elif(second_sub_option == 'D'):
                                         break
@@ -330,10 +346,10 @@ def main():
                     elif (opt == 3):
                         print('----- Change your primary team --------')
                         choose_teams_menu()
-                        fav_team = (input('Enter the team you would like to change to :')).upper()
+                        alternative_opt = (input('Enter the team you would like to change to :')).upper()
 
-                        if (validate_team_input(fav_team)):
-                            fav_team = map[fav_team]
+                        if (validate_team_input(alternative_opt)):
+                            fav_team = map[alternative_opt]
                             fav_team_list = get_matches_of_fav_team(fav_team)
 
                     elif (opt == 4):
