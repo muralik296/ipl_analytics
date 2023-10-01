@@ -8,27 +8,26 @@ from utils import get_matches_of_fav_team
 from about import about_app
 from menus import choose_teams_menu,main_menu,first_sub_menu,second_sub_menu
 
-def view_win_loss_stats_fav_team(teamA,teamAList,year1,year2):
-        """Returns a tuple with no. of wins, losses and no result matches of teamA between year1 and year2"""
+def view_win_loss_stats_fav_team(teamA,teamAList):
+        """Returns a tuple with no. of wins, losses and no result matches of teamA"""
         number_of_wins = 0
         number_of_losses = 0
         no_result = 0
 
         for ele in teamAList:
-            # if year is empty it means all years / if year is not empty but equal to a certain season
-            # ele[3] indicates the year when the match was played
-            if (int(ele[3]) >= year1 and int(ele[3]) <= year2):
-                # 11th column in the csv indicates the winning team
-                if(ele[11] == teamA):
-                    number_of_wins+=1
-                elif (ele[11] == 'NA'):
-                    no_result+=1
-                else:
-                    number_of_losses+=1
+        # if year is empty it means all years / if year is not empty but equal to a certain season
+        # ele[3] indicates the year when the match was played
+            # 11th column in the csv indicates the winning team
+            if(ele[11] == teamA):
+                number_of_wins+=1
+            elif (ele[11] == 'NA'):
+                no_result+=1
+            else:
+                number_of_losses+=1
         return (number_of_wins,number_of_losses,no_result)
 
 
-def motm(teamA,teamAList,year1,year2):
+def motm(teamA,teamAList):
     """ Returns an object containing the name of player and number of times they have won man of the match awards between year 1 and year 2 """
     # stores the number of man of the match awardees
     motm = {}
@@ -36,13 +35,12 @@ def motm(teamA,teamAList,year1,year2):
     for ele in teamAList:
 
         # making sure that it is in between those two year ranges and ele[11] indicates the winnning team
-        if (int(ele[3]) >= year1 and int(ele[3]) <= year2):
-            #ele 16 is a list but when read its a string, usage of eval() => list
-            if (ele[5] == teamA and ele[15] in eval(ele[16]) or (ele[6] == teamA and ele[15] in eval(ele[17]))):
-                if (ele[15] in motm):
-                    motm[ele[15]]+=1
-                else:
-                    motm[ele[15]] = 1
+        #ele 16 is a list but when read its a string, usage of eval() => list
+        if (ele[5] == teamA and ele[15] in eval(ele[16]) or (ele[6] == teamA and ele[15] in eval(ele[17]))):
+            if (ele[15] in motm):
+                motm[ele[15]]+=1
+            else:
+                motm[ele[15]] = 1
 
     # sorting the dictonary by who won the most number of motm awards                
     sorted_motm = sorted(motm.items(), key=lambda x:x[1], reverse=True)
@@ -69,26 +67,13 @@ def validate_change_teams(fav_team,teamB):
     return True
 
 
-def infer_performance(success_rate,teamA,year1,year2):
+def infer_performance(success_rate,teamA):
     if (success_rate < 50):
-        if (year1 == year2):
-            print(f'{teamA} performance has been below par in the year {year1}')
-        else:
-            print(f'{teamA} performance has been below par between the years {year1} and {year2}')
+        print(f'{teamA} performance has been below par')
 
     else:
-        if (year1 == year2):
-            print(f'{teamA} performance has been above par in the year {year1}')
-        else:
-            print(f'{teamA} performance has been above par between the years {year1} and {year2}')
+        print(f'{teamA} performance has been above par')
 
-
-def input_years():
-    print('-- Input the seasons range --')
-    print('The year must be between 2008 and 2022')
-    year1 = (input('Enter first year: ')).strip()
-    year2 = (input('Enter second year: ')).strip()
-    return year1,year2
 
 def main():
     try:
@@ -125,64 +110,44 @@ def main():
 
                             # team performance in the year range
                             if (first_sub_option == 'A'):
-                                year1,year2=input_years()
+
+                                number_of_wins,number_of_losses,no_result = view_win_loss_stats_fav_team(fav_team,fav_team_list)
+                                total_matches_played = (number_of_wins+number_of_losses+no_result)
                                 
-                                if((year1.isnumeric() == False) or (year2.isnumeric() == False)):
-                                    print('Invalid years input, please enter values between 2008 and 2022')
-
-                                elif(int(year1) < 2008 or int(year2) > 2022):
-                                    print('Invalid years input, please enter values between 2008 and 2022')
-
+                                if (total_matches_played == 0):
+                                    print('The team did not play during those seasons')
                                 else:
-                                    year1=int(year1)
-                                    year2=int(year2)
-                                    number_of_wins,number_of_losses,no_result = view_win_loss_stats_fav_team(fav_team,fav_team_list,year1,year2)
-                                    total_matches_played = (number_of_wins+number_of_losses+no_result)
-                                    
-                                    if (total_matches_played == 0):
-                                        print('The team did not play during those seasons')
-                                    else:
-                                        print('')
-                                        print(f'------ Team performance between {year1} and {year2} ------')
-                                        print(f'Total Matches Played: {total_matches_played}')
+                                    print('')
+                                    print(f'------ Team performance  ------')
+                                    print(f'Total Matches Played: {total_matches_played}')
 
-                                        print(f'Number of wins: {number_of_wins}')
-                                        print(f'Lost Matches: {number_of_losses}')
-                                        print(f'No result : {no_result}')
-                                        print()
-                                        success_rate = round((number_of_wins/total_matches_played)*100)
-                                        print(f'Win Percentage: {success_rate} %')
-                                        infer_performance(success_rate,fav_team,year1,year2)
-                                        print('')
+                                    print(f'Number of wins: {number_of_wins}')
+                                    print(f'Lost Matches: {number_of_losses}')
+                                    print(f'No result : {no_result}')
+                                    print()
+                                    success_rate = round((number_of_wins/total_matches_played)*100)
+                                    print(f'Win Percentage: {success_rate} %')
+                                    infer_performance(success_rate,fav_team)
+                                    print('')
 
                             # 1.2 is MOTM records 
                             elif (first_sub_option  == 'B'):
 
-                                # stats between which seasons
-                                year1,year2 = input_years()
-                                if((year1.isnumeric() == False) or (year2.isnumeric() == False)):
-                                    print('Invalid years input, please enter values between 2008 and 2022')
-   
-                                elif(int(year1) < 2008 or int(year2) > 2022):
-                                    print('Invalid years input, please enter values between 2008 and 2022')
+                                result = motm(fav_team,fav_team_list)
+                                
+                                # Print the table
+                                print()
+                                print(f'The Man of the Match Awardees in the specified time range')
+                                print("{:<20} {:<5}".format("Player", "Number of MOTM"))
+                                print("-" * 30)
+                                for player, count in result:
+                                    print("{:<20} {:<5}".format(player, count))
+                                #inference
+                                if (len(result) == 0):
+                                    print('Team has not played during those seasons')
                                 else:
-                                    year1=int(year1)
-                                    year2=int(year2)
-                                    result = motm(fav_team,fav_team_list,year1,year2)
-                                    
-                                    # Print the table
-                                    print()
-                                    print(f'The Man of the Match Awardees in the specified time range')
-                                    print("{:<20} {:<5}".format("Player", "Number of MOTM"))
-                                    print("-" * 30)
-                                    for player, count in result:
-                                        print("{:<20} {:<5}".format(player, count))
-                                    #inference
-                                    if (len(result) == 0):
-                                        print('Team has not played during those seasons')
-                                    else:
-                                        print(f'{result[0][0]} is the player with most number of awards in the specified period')
-                                        print('')
+                                    print(f'{result[0][0]} is the player with most number of awards in the specified period')
+                                    print('')
 
                             #1.3 is Playoffs record
                             elif (first_sub_option == 'C'):
@@ -264,7 +229,7 @@ def main():
                                             print(f'{fav_team} has won {number_of_wins} head-to-head contests against {teamB}')
 
                                             print(f'Win % of {fav_team} against {teamB}: {round((number_of_wins/total_matches)*100)}%')
-                                            print(f'Win % tosses of {fav_team} against {teamB}: t{round((toss_wins/total_matches*100))}%')
+                                            print(f'Win % tosses of {fav_team} against {teamB}: {round((toss_wins/total_matches*100))}%')
                                         else:
                                             print(f'No games played between {fav_team} and {teamB}')
 
