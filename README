@@ -1,2 +1,9 @@
 The IPL Team Analytics Management System is a Python-based mini project created to get a simplified representation of the performance analysis of different IPL cricket teams over the course of the competition’s history from 2008 to 2022. The IPL Board of Management, team captains, coaches, players, and key spectators can use this system to analyze and effectively manage their respective team's current accomplishments in league games and play-offs for the upcoming seasons in the future and they can implement new strategies for their improvement with support of this system.
 
+To run the application:
+1. Make sure you have python 3 version downloaded and installed.
+2. Make sure to have the matches.csv file in your main project directory.  
+
+type in the below to run the app
+
+python index.py
