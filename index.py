@@ -8,7 +8,6 @@ from about import about_app
 from menus import choose_teams_menu,main_menu,first_sub_menu,second_sub_menu
 from validators import validate_change_teams,validate_team_input
 
-
 def get_team_performance(teamA,teamAList):
         """Returns a tuple with no. of wins, losses and no result matches of teamA"""
         number_of_wins = 0
@@ -111,7 +110,7 @@ def main():
                                     print(f'Won Matches : {number_of_wins}')
                                     print(f'Lost Matches: {number_of_losses}')
                                     print(f'No result : {no_result}')
-                                    print(f'Success Rate : {success_rate} %')
+                                    print(f'Overall success rate of {fav_team} : {success_rate} %')
                                     infer_performance(success_rate,fav_team)
                                     print()
 
@@ -122,7 +121,7 @@ def main():
                                 
                                 # Print the table
                                 print()
-                                print(f'The Man of the Match Awardees')
+                                print(f'The Man of the Match Awardees across all seasons')
                                 print("{:<20} {:<5}".format("Player", "Number of MOTM"))
                                 print("-" * 30)
                                 for player, count in result:
@@ -215,8 +214,8 @@ def main():
                                             print(f'{fav_team} has played {total_matches} matches against {teamB}')
                                             print(f'{fav_team} has won {number_of_wins} head-to-head contests against {teamB}')
 
-                                            print(f'Win % of {fav_team} against {teamB}: {round((number_of_wins/total_matches)*100)}%')
-                                            print(f'Win % tosses of {fav_team} against {teamB}: {round((toss_wins/total_matches*100))}%')
+                                            print(f'Success rate of {fav_team} against {teamB}: {round((number_of_wins/total_matches)*100)}%')
+                                            print(f'Success rate of tosses of {fav_team} against {teamB}: {round((toss_wins/total_matches*100))}%')
                                         else:
                                             print(f'No games played between {fav_team} and {teamB}')
 
@@ -267,23 +266,25 @@ def main():
                                         print(f'{fav_team} and {teamB} went head-to-head in {both_playoffs} playoff matches')
                                         print(f'{fav_team} has won {teamA_cup} IPL tournaments across all seasons')
                                         print(f'{teamB} has won {teamB_cup} IPL tournaments across all seasons')
-                                        print('')
+                                        print()
                                         print(f'{fav_team} has played {teamA_playoffs} playoff matches')
                                         print(f'{teamB} has played {teamB_playoffs} playoff matches')
                                         
-                                        more_playoff = f"{teamB} has played more playoff games than {fav_team}" if (teamB_playoffs>teamA_playoffs) else f"{fav_team} has played more playoff games than {teamB}" 
-
-                                        print(more_playoff)
+                                        #printing the right inference
+                                        if (teamB_playoffs > teamA_playoffs):
+                                            print(f'{teamB} has played more playoff games than {fav_team}')
+                                        elif (teamB_playoffs < teamA_playoffs):
+                                            print(f'{fav_team} has played more playoff games than {teamB}')
+                                        else:
+                                            print(f'{fav_team} and {teamB} have played same number of playoff games')
                                             
                                     # 2.3 Change teamB
                                     elif (second_sub_option == 'C'):
                                         print("--- Change your opposing team ---")
                                         choose_teams_menu()
                                         alternative_opt = (input('Enter the opposing team: ')).upper()
-
                                         if (validate_team_input(alternative_opt) and validate_change_teams(fav_team,map[alternative_opt])):                   
                                             teamB = map[alternative_opt]
-
                                     # 2.4 go back to main menu
                                     elif(second_sub_option == 'D'):
                                         break

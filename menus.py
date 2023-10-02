@@ -25,8 +25,8 @@ def main_menu(fav_team):
 
         print()
         print('----- Main Menu -----')
-        print(f'1. Stats of your team {fav_team}')
-        print(f'2. Stats of {fav_team} against another team')
+        print(f'1. Performance of {fav_team}')
+        print(f'2. Performance of {fav_team} against an opponent team')
         print(f'3. Change your favorite team')
         print(f'4. Exit')
         print()
@@ -43,8 +43,7 @@ def main_menu(fav_team):
 def first_sub_menu(fav_team):
     """Displays the first submenu when user selects Stats of their team"""
     try:
-
-        print(f'----------- Team analysis of {fav_team} --------------')
+        print(f'----------- Menu Options for team analysis of {fav_team} --------------')
         print(f'a. Team performance')
         print(f'b. MOTM Records (Man of the match records)')
         print(f'c. Playoffs record')
@@ -64,7 +63,7 @@ def first_sub_menu(fav_team):
 def second_sub_menu(fav_team, teamB):
     try:
 
-        print(f'----------- Stats {fav_team} vs. {teamB} --------------')
+        print(f'----------- Menu options for {fav_team} vs. {teamB} --------------')
         print(f'a. Team Performance of {fav_team} against {teamB}')
         print(f'b. Performance of {fav_team} against {teamB} in playoffs')
         print(f'c. Change the team you would like to compare against')
