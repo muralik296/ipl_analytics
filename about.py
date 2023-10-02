@@ -1,4 +1,5 @@
 def about_app():
+    """ Prints the about of IPL Analytics Application """
     print('WELCOME TO THE IPL ANALYTICS APPLICATION 🏏')
     print('-'*45)
     print('ABOUT IPL (Indian Premier League): ')

@@ -1,7 +1,7 @@
-#csv
 import csv
 
 def get_matches_of_fav_team(fav_team):
+    """Returns the list of matches of fav_team. From the csv existing data , it will return information relevant only to fav_team"""
     # below will contain the filtered list only where the favorite team is either teamA or teamB
     fav_team_list = []
     with open('matches.csv', 'r') as csvfile:

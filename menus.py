@@ -61,6 +61,7 @@ def first_sub_menu(fav_team):
 
 
 def second_sub_menu(fav_team, teamB):
+    """ Menu options between the main team and opponent team """
     try:
 
         print(f'----------- Menu options for {fav_team} vs. {teamB} --------------')

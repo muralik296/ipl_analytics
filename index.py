@@ -66,6 +66,7 @@ def infer_performance(success_rate,teamA):
 
 
 def main():
+    """ Main function """
     try:
         # about the app
         about_app()
