@@ -2,8 +2,6 @@ from customErrorClass import InvalidInput
 
 def choose_teams_menu():
     """Displays the menu of available teams and lets user pick his favorite team and returns the favorite team"""
-    """
-    """
     print("List of Currently Playing Teams")
     print('-'*45)
     print('Gujarat Titans (GT)')
@@ -17,7 +15,7 @@ def choose_teams_menu():
     print('Delhi Capitals (DC)')
     print('Sunrisers Hyderabad (SRH)')
     print('')
-    print('Please choose the team by entering the abbrevation of the team name. e.g. to select Sunrisers Hyderabad, type "SRH" ')
+    print('Please choose the team by entering the abbrevation of the team name . e.g. to select Sunrisers Hyderabad, type "SRH" or "srh" ')
 
 def main_menu(fav_team):
     """Displays menu with the stats available for the player to view"""
