@@ -8,7 +8,7 @@ from utils import get_matches_of_fav_team
 from about import about_app
 from menus import choose_teams_menu,main_menu,first_sub_menu,second_sub_menu
 
-def view_win_loss_stats_fav_team(teamA,teamAList):
+def get_team_performance(teamA,teamAList):
         """Returns a tuple with no. of wins, losses and no result matches of teamA"""
         number_of_wins = 0
         number_of_losses = 0
@@ -24,7 +24,9 @@ def view_win_loss_stats_fav_team(teamA,teamAList):
                 no_result+=1
             else:
                 number_of_losses+=1
-        return (number_of_wins,number_of_losses,no_result)
+        total_matches = (number_of_wins+number_of_losses+no_result)
+        success_rate = round((number_of_wins/(number_of_wins+number_of_losses))*100,1)
+        return (total_matches,number_of_wins,number_of_losses,no_result,success_rate)
 
 
 def motm(teamA,teamAList):
@@ -111,24 +113,20 @@ def main():
                             # team performance in the year range
                             if (first_sub_option == 'A'):
 
-                                number_of_wins,number_of_losses,no_result = view_win_loss_stats_fav_team(fav_team,fav_team_list)
-                                total_matches_played = (number_of_wins+number_of_losses+no_result)
-                                
-                                if (total_matches_played == 0):
+                                total_matches,number_of_wins,number_of_losses,no_result,success_rate = get_team_performance(fav_team,fav_team_list)
+
+                                if (total_matches == 0):
                                     print('The team did not play during those seasons')
                                 else:
                                     print('')
-                                    print(f'------ Team performance  ------')
-                                    print(f'Total Matches Played: {total_matches_played}')
-
-                                    print(f'Number of wins: {number_of_wins}')
+                                    print(f'------ Team performance of {fav_team} ------')
+                                    print(f'Total Matches Played : {total_matches}')
+                                    print(f'Won Matches : {number_of_wins}')
                                     print(f'Lost Matches: {number_of_losses}')
                                     print(f'No result : {no_result}')
-                                    print()
-                                    success_rate = round((number_of_wins/total_matches_played)*100)
-                                    print(f'Win Percentage: {success_rate} %')
+                                    print(f'Success Rate : {success_rate} %')
                                     infer_performance(success_rate,fav_team)
-                                    print('')
+                                    print()
 
                             # 1.2 is MOTM records 
                             elif (first_sub_option  == 'B'):
