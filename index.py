@@ -1,4 +1,3 @@
-
 """The data from the csv is picked up from 
 https://www.kaggle.com/datasets/vora1011/ipl-2008-to-2021-all-match-dataset
 """
@@ -7,12 +6,7 @@ from map import map
 from utils import get_matches_of_fav_team
 from about import about_app
 from menus import choose_teams_menu,main_menu,first_sub_menu,second_sub_menu
-
-
-# custom error
-class InvalidInput(Exception):
-    def __init__(self, message):
-        super().__init__(message)
+from validators import validate_change_teams,validate_team_input
 
 
 def get_team_performance(teamA,teamAList):
@@ -35,7 +29,6 @@ def get_team_performance(teamA,teamAList):
         success_rate = round((number_of_wins/(number_of_wins+number_of_losses))*100,1)
         return (total_matches,number_of_wins,number_of_losses,no_result,success_rate)
 
-
 def motm(teamA,teamAList):
     """ Returns an object containing the name of player and number of times they have won man of the match awards between year 1 and year 2 """
     # stores the number of man of the match awardees
@@ -57,31 +50,15 @@ def motm(teamA,teamAList):
     return sorted_motm
 
 def playoff_record(teamAList):
+    """Returns the playoff matches played by teamA which includes qualifiers and finals"""
     qualifiers = []
     for ele in teamAList:
         if (ele[4] == 'Qualifier' or ele[4] == 'Final'):
             qualifiers.append((ele))
     return qualifiers
 
-def validate_team_input(teamA):
-    try:
-        if (teamA not in map.keys()):
-            raise InvalidInput(f'Invalid input, please select from the list of available teams {list(map.keys())}')
-        return True
-    except InvalidInput as e:
-        print(e)
-        return False
-
-def validate_change_teams(teamA,teamB):
-    try:
-        if (teamA == teamB):
-            raise InvalidInput(f'The opposing team and your current team cannot be the same! Please choose a team other than {teamA}')
-        return True
-    except InvalidInput as e:
-        print(e)
-        return False
-
 def infer_performance(success_rate,teamA):
+    """Prints the team performance based on the succes_rate, if success_rate is greater than 50% considering it as above par"""
     if (success_rate < 50):
         print(f'{teamA} performance has been below par')
 
@@ -109,9 +86,7 @@ def main():
                 while (True):
                     # main menu with the main 3 options
                     opt = int(main_menu(fav_team))
-                    
-                    print('')
-
+                    print()
                     # option 1 is to check for the wins/losses stats of teamA
                     if (opt == 1):
                         
@@ -190,7 +165,7 @@ def main():
                                 break
                     # 2
                     elif (opt == 2):
-                        
+                        choose_teams_menu()
                         teamB = (input('Enter the opponent: ')).upper()
 
                         # TODO validate the input at once
@@ -314,7 +289,7 @@ def main():
                                         break
                                     
                                     else:
-                                        print('Invalid option. Please choose between 1-4')
+                                        pass
 
                     elif (opt == 3):
                         print('----- Change your primary team --------')
@@ -326,10 +301,10 @@ def main():
                             fav_team_list = get_matches_of_fav_team(fav_team)
 
                     elif (opt == 4):
-                        # break
                         sys.exit(0)
                     else:
-                        print('Invalid Option, please select options between 1-3')
+                        pass
+                        # print('Invalid Option, please select options between 1-3')
             
     except ZeroDivisionError:
         print('Err: Encountered division by zero')

@@ -1,3 +1,5 @@
+from customErrorClass import InvalidInput
+
 def choose_teams_menu():
     """Displays the menu of available teams and lets user pick his favorite team and returns the favorite team"""
     """
@@ -19,40 +21,60 @@ def choose_teams_menu():
 
 def main_menu(fav_team):
     """Displays menu with the stats available for the player to view"""
-    print()
-    print('----- Main Menu -----')
-    print(f'1. Stats of your team {fav_team}')
-    print(f'2. Stats of {fav_team} against another team')
-    print(f'3. Change your favorite team')
-    print(f'4. Exit')
-    print()
-    opt = (input('Enter options between 1-4: ')).strip()
-    print()    
-    return int(opt)
+    try:
+
+        print()
+        print('----- Main Menu -----')
+        print(f'1. Stats of your team {fav_team}')
+        print(f'2. Stats of {fav_team} against another team')
+        print(f'3. Change your favorite team')
+        print(f'4. Exit')
+        print()
+        opt = (input('Enter options between 1-4: ')).strip()
+        if (opt not in ['1','2','3','4']):
+            raise InvalidInput('Invalid input, please enter options between 1-4')
+        return opt
+    except InvalidInput as e:
+        print(e)
+        return False
 
 
 
 def first_sub_menu(fav_team):
-    print(f'----------- Team analysis of {fav_team} --------------')
-    print(f'a. Team performance')
-    print(f'b. MOTM Records (Man of the match records)')
-    print(f'c. Playoffs record')
-    print(f'd. Go back to Main Menu')
-    print()
-    opt = input('Enter options (a-d): ')
-    print()
+    """Displays the first submenu when user selects Stats of their team"""
+    try:
 
-    return opt.upper().strip()
+        print(f'----------- Team analysis of {fav_team} --------------')
+        print(f'a. Team performance')
+        print(f'b. MOTM Records (Man of the match records)')
+        print(f'c. Playoffs record')
+        print(f'd. Go back to Main Menu')
+        print()
+        opt = input('Enter options (a-d): ')
+        if (opt not in ['a','b','c','d','A','B','C','D']):
+                raise InvalidInput('Invalid input, please enter options between a-d (or) A-D')
+        return opt.upper().strip()
+    
+    except InvalidInput as e:
+        print(e)
+        return False 
+
 
 
 def second_sub_menu(fav_team, teamB):
-    print(f'----------- Stats {fav_team} vs. {teamB} --------------')
-    print(f'a. Team Performance of {fav_team} against {teamB}')
-    print(f'b. Performance of {fav_team} against {teamB} in playoffs')
-    print(f'c. Change the team you would like to compare against')
-    print(f'd. Go back to Main Menu')
-    print()
-    opt = input('Enter options (a-d): ')
-    print()
+    try:
 
-    return opt.upper().strip()
+        print(f'----------- Stats {fav_team} vs. {teamB} --------------')
+        print(f'a. Team Performance of {fav_team} against {teamB}')
+        print(f'b. Performance of {fav_team} against {teamB} in playoffs')
+        print(f'c. Change the team you would like to compare against')
+        print(f'd. Go back to Main Menu')
+        print()
+        opt = input('Enter options (a-d): ')
+        if (opt not in ['a','b','c','d','A','B','C','D']):
+                raise InvalidInput('Invalid input, please enter options between a-d (or) A-D')
+        return opt.upper().strip()
+    
+    except InvalidInput as e:
+        print(e)
+        return False 
