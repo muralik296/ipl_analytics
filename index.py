@@ -8,6 +8,13 @@ from utils import get_matches_of_fav_team
 from about import about_app
 from menus import choose_teams_menu,main_menu,first_sub_menu,second_sub_menu
 
+
+# custom error
+class InvalidInput(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
 def get_team_performance(teamA,teamAList):
         """Returns a tuple with no. of wins, losses and no result matches of teamA"""
         number_of_wins = 0
@@ -56,18 +63,23 @@ def playoff_record(teamAList):
             qualifiers.append((ele))
     return qualifiers
 
-def validate_team_input(team):
-    if (team not in map.keys()):
-        print(f'Invalid input, please select from the list of available teams {list(map.keys())}')
+def validate_team_input(teamA):
+    try:
+        if (teamA not in map.keys()):
+            raise InvalidInput(f'Invalid input, please select from the list of available teams {list(map.keys())}')
+        return True
+    except InvalidInput as e:
+        print(e)
         return False
-    return True
 
-def validate_change_teams(fav_team,teamB):
-    if(fav_team == teamB):
-        print('The opposing team and your current team cannot be the same!')
+def validate_change_teams(teamA,teamB):
+    try:
+        if (teamA == teamB):
+            raise InvalidInput(f'The opposing team and your current team cannot be the same! Please choose a team other than {teamA}')
+        return True
+    except InvalidInput as e:
+        print(e)
         return False
-    return True
-
 
 def infer_performance(success_rate,teamA):
     if (success_rate < 50):
@@ -119,7 +131,7 @@ def main():
                                     print('The team did not play during those seasons')
                                 else:
                                     print('')
-                                    print(f'------ Team performance of {fav_team} ------')
+                                    print(f'Team performance of {fav_team}')
                                     print(f'Total Matches Played : {total_matches}')
                                     print(f'Won Matches : {number_of_wins}')
                                     print(f'Lost Matches: {number_of_losses}')
@@ -130,26 +142,28 @@ def main():
 
                             # 1.2 is MOTM records 
                             elif (first_sub_option  == 'B'):
-
+                                # result contains the man of the match awardees for the team
                                 result = motm(fav_team,fav_team_list)
                                 
                                 # Print the table
                                 print()
-                                print(f'The Man of the Match Awardees in the specified time range')
+                                print(f'The Man of the Match Awardees')
                                 print("{:<20} {:<5}".format("Player", "Number of MOTM"))
                                 print("-" * 30)
                                 for player, count in result:
                                     print("{:<20} {:<5}".format(player, count))
+
                                 #inference
                                 if (len(result) == 0):
                                     print('Team has not played during those seasons')
                                 else:
-                                    print(f'{result[0][0]} is the player with most number of awards in the specified period')
+                                    #[0][0] indicates the player with maximum number of man of the match awards
+                                    print(f'{result[0][0]} is the player with most number of awards')
                                     print('')
 
                             #1.3 is Playoffs record
-                            elif (first_sub_option == 'C'):
-                                
+                            elif (first_sub_option == 'C'): 
+                                # result contains the list of matches where team has qualified for playoffs 
                                 result = playoff_record(fav_team_list)
                                 print("{:<5} {:<20} {:<40} {:<40} {:<40} {:<40}".format("Year", "Playoff Match","First Team","Second Team","Winning Team","Venue"))
                                 print("-" * 185)
@@ -166,7 +180,7 @@ def main():
                                 
                                 print('')
                                 
-                                # print only if any wins in the years
+                                # conditional string if team has won any cup
                                 conditional_string = f"{fav_team} has won {number_of_wins} IPL Cups in the years {string_with_years}." if (number_of_wins>0) else f"{fav_team} has not won any IPL Cups" 
                                 
                                 print(f'{conditional_string}')
@@ -178,12 +192,12 @@ def main():
                     elif (opt == 2):
                         
                         teamB = (input('Enter the opponent: ')).upper()
-                                    
-                        if (validate_team_input(teamB)):
-                            #validating changing of opposing team
-                            if (validate_change_teams(fav_team,map[teamB])):
 
-                                #normalize input data
+                        # TODO validate the input at once
+
+                        if (validate_team_input(teamB) and validate_change_teams(fav_team,map[teamB])):
+                                
+                                #normalize teamB to the specified team name
                                 teamB = map[teamB]
 
                                 while (True):
@@ -292,10 +306,8 @@ def main():
                                         choose_teams_menu()
                                         alternative_opt = (input('Enter the opposing team: ')).upper()
 
-                                        if (validate_team_input(alternative_opt)):
-                                            #validating changing of opposing team
-                                            if (validate_change_teams(fav_team,map[alternative_opt])):
-                                                teamB = map[alternative_opt]
+                                        if (validate_team_input(alternative_opt) and validate_change_teams(fav_team,map[alternative_opt])):                   
+                                            teamB = map[alternative_opt]
 
                                     # 2.4 go back to main menu
                                     elif(second_sub_option == 'D'):
@@ -323,7 +335,9 @@ def main():
         print('Err: Encountered division by zero')
     except ValueError:
         print('Err: Invalid Input')
-    
+    except FileNotFoundError:
+        print('Err: Please make sure the file matches.csv is present before running the application')
+        print()
     finally:
         print('Thank you for using our application')
 

@@ -48,7 +48,7 @@ def first_sub_menu(fav_team):
 def second_sub_menu(fav_team, teamB):
     print(f'----------- Stats {fav_team} vs. {teamB} --------------')
     print(f'a. Team Performance of {fav_team} against {teamB}')
-    print(f'b. How does {fav_team} stand against {teamB} in playoffs')
+    print(f'b. Performance of {fav_team} against {teamB} in playoffs')
     print(f'c. Change the team you would like to compare against')
     print(f'd. Go back to Main Menu')
     print()
