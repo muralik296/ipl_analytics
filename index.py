@@ -132,10 +132,14 @@ def main():
                                 if (len(result) == 0):
                                     print('Team has not played during those seasons')
                                 else:
-                                    #[0][0] indicates the player with maximum number of man of the match awards
-                                    print(f'{result[0][0]} is the player with most number of awards')
-                                    print('')
-
+                                    # max_no_motm => maximum number with man of the match awards
+                                    max_no_motm = max(result, key=lambda x: x[1])[1]
+                                    # names with maximum number of awards
+                                    names_with_max_awards = ','.join([name for name, awards in result if awards == max_no_motm])
+                                    
+                                    print(f'Highest Man of the Match Awards: {names_with_max_awards}')
+                                    print()
+                                    
                             #1.3 is Playoffs record
                             elif (first_sub_option == 'C'): 
                                 # result contains the list of matches where team has qualified for playoffs 
