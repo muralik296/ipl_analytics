@@ -306,14 +306,12 @@ def main():
                     else:
                         pass
                         # print('Invalid Option, please select options between 1-3')
-            
-    except ZeroDivisionError:
-        print('Err: Encountered division by zero')
-    except ValueError:
-        print('Err: Invalid Input')
     except FileNotFoundError:
         print('Err: Please make sure the file matches.csv is present before running the application')
         print()
+    except Exception as e:
+        print(e)
+        print('An exception has occured')
     finally:
         print('Thank you for using our application')
 
