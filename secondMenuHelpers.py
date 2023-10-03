@@ -1,7 +1,4 @@
 from utils import get_matches_of_fav_team
-from validators import validate_change_teams,validate_team_input
-from menus import choose_teams_menu
-from map import map
 
 def display_playoff_record_teamA_teamB(fav_team,fav_team_list,teamB):
         """Displays the playoff record between team A and team B"""
