@@ -4,6 +4,9 @@ To run the application:
 1. Make sure you have python 3 version downloaded and installed.
 2. Make sure to have the matches.csv file in your main project directory.  
 
+Reference to data set of IPL tournament matches
+https://www.kaggle.com/datasets/vora1011/ipl-2008-to-2021-all-match-dataset
+
 type in the below to run the app
 
 python index.py
